@@ -1,0 +1,2 @@
+Call 'SuperresCode.m' with a low-resolution input image (with scale: [0,255]) and the desired magnification factor (2, 3, or 4) as arguments.
+Please refer to 'Test.m' for an example.

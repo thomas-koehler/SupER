@@ -1,0 +1,23 @@
+Super Resolution using Sparse Representation
+============================================
+
+Contact Information
+-------------------
+Roman Zeyde
+Computer Science Department
+Technion, Haifa 32000 Israel
+romanz@cs.technion.ac.il
+
+Needed packages
+---------------
+* OMPBox v9+ and KSVDBox v12+ by Ron Rubinstein are used 
+for dictionary training and sparse coding.
+[http://www.cs.technion.ac.il/~ronrubin/software.html]
+
+* Training ant test files of Yang et. al. Super Resolution algorithm.
+(Image Super-resolution as Sparse Representation of Raw Image Patches, (CVPR) 2008.
+[../CVPR08-SR/]
+
+Usage
+-----
+>> Example; % demo usage of the algorithm

@@ -1,0 +1,161 @@
+name: "CaffeNet_Superres"
+input: "data_pair"
+input_dim: @DIM_B@
+input_dim: 7
+input_dim: @DIM_X@
+input_dim: @DIM_Y@
+layers {
+  name: "slice_frames"
+  type: SLICE
+  bottom: "data_pair"
+  top: "data_tm2"
+  top: "data_tm1"
+  top: "data_t"
+  top: "data_tp1"
+  top: "data_tp2"
+  top: "data_grad"
+  slice_param {
+     slice_dim: 1
+     slice_point: 1
+     slice_point: 2
+     slice_point: 3
+     slice_point: 4
+     slice_point: 5
+  }
+}
+layers {
+  name: "silence_grad"
+  type: SILENCE
+  bottom: "data_grad"
+}
+layers {
+  name: "conv1_tm2"
+  type: CONVOLUTION
+  bottom: "data_tm2"
+  top: "conv1_tm2"
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 4
+    stride: 1
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tm2"
+  top: "conv1_tm2"
+}
+layers {
+  name: "conv1_tm1"
+  type: CONVOLUTION
+  bottom: "data_tm1"
+  top: "conv1_tm1"
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 4
+    stride: 1
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tm1"
+  top: "conv1_tm1"
+}
+layers {
+  name: "conv1_t"
+  type: CONVOLUTION
+  bottom: "data_t"
+  top: "conv1_t"
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 4
+    stride: 1
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_t"
+  top: "conv1_t"
+}
+layers {
+  name: "conv1_tp1"
+  type: CONVOLUTION
+  bottom: "data_tp1"
+  top: "conv1_tp1"
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 4
+    stride: 1
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tp1"
+  top: "conv1_tp1"
+}
+layers {
+  name: "conv1_tp2"
+  type: CONVOLUTION
+  bottom: "data_tp2"
+  top: "conv1_tp2"
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 4
+    stride: 1
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tp2"
+  top: "conv1_tp2"
+}
+layers {
+  name: "concat"
+  bottom: "conv1_tm2"
+  bottom: "conv1_tm1"
+  bottom: "conv1_t"
+  bottom: "conv1_tp1"
+  bottom: "conv1_tp2"
+  top: "conv1"
+  type: CONCAT
+  concat_param {
+    concat_dim: 1
+  }
+}
+layers {
+  name: "conv2"
+  type: CONVOLUTION
+  bottom: "conv1"
+  top: "conv2"
+  convolution_param {
+    num_output: 32
+    kernel_size: 5
+    pad: 2
+  }
+}
+layers {
+  name: "relu2"
+  type: RELU
+  bottom: "conv2"
+  top: "conv2"
+}
+layers {
+  name: "conv3"
+  type: CONVOLUTION
+  bottom: "conv2"
+  top: "conv3"
+  convolution_param {
+    num_output: 1
+    kernel_size: 5
+    pad: 2
+  }
+}

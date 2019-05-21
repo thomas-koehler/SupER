@@ -1,0 +1,7 @@
+MEX = C:\MATLAB6p5\bin\win32\mex.bat #mex
+NRFDIR = ./nrf
+MEXT = dll
+
+all: cgf_sc.c 
+	make -C nrf -f makefile.win32
+	$(MEX) -I$(NRFDIR) cgf_sc.c nrf/libnrfopt.a -output cgf_sc2

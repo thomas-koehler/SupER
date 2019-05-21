@@ -1,0 +1,316 @@
+name: "CaffeNet_Superres"
+layers {
+  name: "data_pair"
+  type: HDF5_DATA
+  top: "data"
+  top: "label"
+  hdf5_data_param {
+    source: "data/Superresolution/databases/SR_Myanmar_u3_36x36_ds4_b0/train.txt"
+    batch_size: 240
+  }
+  include: { phase: TRAIN }
+}
+layers {
+  name: "data_pair"
+  type: HDF5_DATA
+  top: "data"
+  top: "label"
+  hdf5_data_param {
+    source: "data/Superresolution/databases/SR_Myanmar_u3_36x36_ds4_b0/test.txt"
+    batch_size: 240
+  }
+  include: { phase: TEST }
+}
+layers {
+  name: "slice_frames"
+  type: SLICE
+  bottom: "data"
+  top: "data_tm2"
+  top: "data_tm1"
+  top: "data_t"
+  top: "data_tp1"
+  top: "data_tp2"
+  top: "data_gt"
+  top: "data_grad"
+  slice_param {
+     slice_dim: 1
+     slice_point: 1
+     slice_point: 2
+     slice_point: 3
+     slice_point: 4
+     slice_point: 5
+     slice_point: 6
+  }
+}
+layers {
+  name: "silence_label1"
+  type: SILENCE
+  bottom: "label"
+}
+layers {
+  name: "silence_grad"
+  type: SILENCE
+  bottom: "data_grad"
+}
+layers {
+  name: "conv1_tm2"
+  type: CONVOLUTION
+  bottom: "data_tm2"
+  top: "conv1_tm2"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+  param: "conv1_t2_w"
+  param: "conv1_t2_b"
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tm2"
+  top: "conv1_tm2"
+}
+layers {
+  name: "conv1_tm1"
+  type: CONVOLUTION
+  bottom: "data_tm1"
+  top: "conv1_tm1"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+  param: "conv1_t1_w"
+  param: "conv1_t1_b"
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tm1"
+  top: "conv1_tm1"
+}
+layers {
+  name: "conv1_t"
+  type: CONVOLUTION
+  bottom: "data_t"
+  top: "conv1_t"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_t"
+  top: "conv1_t"
+}
+layers {
+  name: "conv1_tp1"
+  type: CONVOLUTION
+  bottom: "data_tp1"
+  top: "conv1_tp1"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+  param: "conv1_t1_w"
+  param: "conv1_t1_b"
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tp1"
+  top: "conv1_tp1"
+}
+layers {
+  name: "conv1_tp2"
+  type: CONVOLUTION
+  bottom: "data_tp2"
+  top: "conv1_tp2"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    kernel_size: 9
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+  param: "conv1_t2_w"
+  param: "conv1_t2_b"
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1_tp2"
+  top: "conv1_tp2"
+}
+layers {
+  name: "concat"
+  bottom: "conv1_tm2"
+  bottom: "conv1_tm1"
+  bottom: "conv1_t"
+  bottom: "conv1_tp1"
+  bottom: "conv1_tp2"
+  top: "conv1"
+  type: CONCAT
+  concat_param {
+    concat_dim: 1
+  }
+}
+layers {
+  name: "conv2"
+  type: CONVOLUTION
+  bottom: "conv1"
+  top: "conv2"
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 32
+    kernel_size: 5
+    pad: 0
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "relu2"
+  type: RELU
+  bottom: "conv2"
+  top: "conv2"
+}
+layers {
+  name: "conv3"
+  type: CONVOLUTION
+  bottom: "conv2"
+  top: "conv3"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 1
+    kernel_size: 5
+    pad: 0
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+#********** CUTTING OFF EDGE - GT ************
+layers {
+  name: "conv_gt"
+  type: CONVOLUTION
+  bottom: "data_gt"
+  top: "gt_center"
+  blobs_lr: 0
+  blobs_lr: 0
+  weight_decay: 0
+  weight_decay: 0
+  convolution_param {
+    num_output: 1
+    kernel_size: 17
+    pad: 0
+    weight_filler {
+      type: "constant"
+      value: 0
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+#********** CUTTING - end ************
+layers {
+  name: "loss"
+  bottom: "conv3"
+  bottom: "gt_center"
+  type: EUCLIDEAN_LOSS
+}
+layers {
+  name: "Euclidean_loss"
+  bottom: "conv3"
+  bottom: "gt_center"
+  top: "l2_error"
+  type: EUCLIDEAN_LOSS
+  include: { phase: TEST }
+}

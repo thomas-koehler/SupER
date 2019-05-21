@@ -1,0 +1,25 @@
+*****************************************************************
+* Demo Codes For Image Super-resolution via Sparse *Representation          
+*****************************************************************
+
+Reference
+
+J. Yang et al. Image super-resolution as sparse representation of raw image patches. CVPR 2008.
+
+J. Yang et al. Image super-resolution via sparse representation. IEEE Transactions on Image Processing, Vol 19, Issue 11, pp2861-2873, 2010
+
+For any problems, send email to jyang29@uiuc.edu
+
+================================================================
+Demo_SR.m: demo code for image super-resolution via sparse recovery 
+
+1. The demo code is for upscaling factor of 2. For larger magnification factors, run the function "ScSR.m" multiple times. Note the code is a little different from what presented in the TIP10 paper. Please find the previous codes and results in folder "Previous".
+
+2. Two pre-trained dictionaries are provided in directory "Dictionary". The dictionaries are for zoom factor of 2. You can train your own dictionary based on function "Demo_Dictionary_Training.m" talked below.
+
+================================================================
+Demo_Dictionary_Training.m: demo code for training the dictionary
+
+1. If you want to train your own dictionary, replace the training images in subfolder "Data/Training" by yours.
+
+2. You need to inspect the statistics of your sampled patches to prune those smooth patches.

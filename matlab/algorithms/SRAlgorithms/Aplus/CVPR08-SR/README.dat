@@ -1,0 +1,19 @@
+Description
+
+This package contains the Matlab codes implementing the super-resolution algorithm described in CVPR'08 paper "Image Super-resolution 
+as Sparse Representation of Raw Image Patches".
+
+The codes vary a little from the original paper:
+a. The implementation is a simplified version of the algorithm described in the paper. The overlapping constraint for patches is not 
+   taken into sparse coding process. The backprojection process is not incorporated either. It seems that straight sparse coding itself 
+   can achieve similar performance.
+b. We trained the dictionary instead of random sampling in this version. A pre-trained dictionary is included (dictionary.mat).
+
+The algorithm is composed of the following parts:
+a. Dictionary training. We used Honglak Lee's package for learning the dictionary. We also include the training images we used in folder
+   "Training".
+b. Sparse representation for super-resolution. Use sparse prior to infer the high resolution patch.
+
+Run Example.m to see how the functions are called. Have fun!
+
+For any questions, please email to jyang29@uiuc.edu

@@ -1,0 +1,14 @@
+net: "models/Superresolution/Run9/3193__9c64-5c32-5c1/superres_train_val.prototxt"
+test_iter: 59
+test_interval: 1000
+base_lr: 0.00001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 200000
+display: 100
+max_iter: 200000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 10000
+snapshot_prefix: "models/Superresolution/Run9/3193__9c64-5c32-5c1/SRnet_train"
+solver_mode: GPU
