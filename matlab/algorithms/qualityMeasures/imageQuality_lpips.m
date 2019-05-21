@@ -1,7 +1,7 @@
 function qualityMeasure = imageQuality_lpips(sr, gt)
     
     % Prepare input images.
-    path = [fileparts(which(mfilename)), '/PerceptualSimilarity'];
+    path = [fileparts(which(mfilename)), '/lpips'];
     cd(path);
     img1 = [path, '/', char(java.util.UUID.randomUUID) '.png'];
     imwrite(sr, img1);
