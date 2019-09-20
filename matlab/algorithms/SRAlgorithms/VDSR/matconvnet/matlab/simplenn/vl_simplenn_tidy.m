@@ -54,8 +54,7 @@ for l = 1:numel(net.layers)
   % check that weights inlcude moments in batch normalization
   if strcmp(layer.type, 'bnorm')
     if numel(layer.weights) < 3
-      layer.weights{3} = ....
-        zeros(numel(layer.weights{1}),2,'single') ;
+      layer.weights{3} = zeros(numel(layer.weights{1}),2,'single') ;
     end
   end
 

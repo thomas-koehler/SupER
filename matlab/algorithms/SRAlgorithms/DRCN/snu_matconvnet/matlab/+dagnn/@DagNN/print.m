@@ -45,7 +45,6 @@ opts.all = false ;
 opts.format = 'ascii' ;
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
-<<<<<<< HEAD
 opts.layers = '*' ;
 opts.parameters = [] ;
 opts.variables = [] ;
